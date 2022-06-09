@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './style.css';
-import TabbedLayout from './TabbedLayout';
+import TabbedLayout, { tabs } from './TabbedLayout';
 
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
@@ -10,9 +10,9 @@ export default function App() {
       <Routes>
         <Route path="/*" element={<TabbedLayout />}>
           <Route index element={<Navigate to={'tab1'} replace />} />
-          <Route path="tab1" element={<div>Tab 1 Content</div>} />
-          <Route path="tab2" element={<div>Tab 2 Content</div>} />
-          <Route path="tab3" element={<div>Tab 3 Content</div>} />
+          <Route path={tabs.TAB1.path} element={<tabs.TAB1.component />} />
+          <Route path={tabs.TAB2.path} element={<tabs.TAB2.component />} />
+          <Route path={tabs.TAB3.path} element={<tabs.TAB3.component />} />
         </Route>
       </Routes>
     </BrowserRouter>
