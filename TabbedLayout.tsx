@@ -38,20 +38,22 @@ function useRouteMatch(patterns: readonly string[]) {
     const pattern = patterns[i];
     const possibleMatch = matchPath(pattern, pathname);
     if (possibleMatch !== null) {
-      return possibleMatch;
+      return possibleMatch.pattern.path;
     }
   }
 
-  return null;
+  return 'tab1';
 }
 
 const TabbedLayout = () => {
   const tabPaths = Object.values(tabs).map((tab) => tab.path);
   const selectedTab = useRouteMatch(tabPaths);
 
+  console.log(selectedTab);
+
   return (
     <Fragment>
-      <Tabs value={selectedTab.pattern.path}>
+      <Tabs value={selectedTab}>
         <Tab
           label={tabs.TAB1.label}
           value={tabs.TAB1.path}
