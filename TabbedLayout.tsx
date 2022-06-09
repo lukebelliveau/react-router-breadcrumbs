@@ -49,6 +49,8 @@ const TabbedLayout = () => {
   const tabPaths = Object.values(tabs).map((tab) => tab.path);
   const selectedTab = useRouteMatch(tabPaths);
 
+  console.log(selectedTab);
+
   return (
     <Fragment>
       <Tabs value={selectedTab.pattern.path}>
