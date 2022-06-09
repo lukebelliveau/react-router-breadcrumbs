@@ -1,6 +1,13 @@
 import { Tab, Tabs } from '@mui/material';
+import { Fragment } from 'react';
 import React = require('react');
-import { useNavigate, useParams } from 'react-router-dom';
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 
 const tabs = {
   TAB1: { label: 'Tab 1', path: 'tab1' },
@@ -8,31 +15,60 @@ const tabs = {
   TAB3: { label: 'Tab 3', path: 'tab3' },
 };
 
+const Layout = ({ children }: { children: JSX.Element }) => {
+  return (
+    <Fragment>
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          border: '1px solid black',
+        }}
+      >
+        {children}
+      </div>
+    </Fragment>
+  );
+};
+
 const TabbedLayout = () => {
   const { selectedTab } = useParams();
   const navigate = useNavigate();
 
   return (
-    <Tabs
-      value={selectedTab}
-      indicatorColor="primary"
-      textColor="primary"
-      onChange={(event, value) => {
-        navigate(value);
-      }}
-      aria-label="select service editor tab"
-    >
-      <Tab label={tabs.TAB1.label} value={tabs.TAB1.path} />
-      <Tab
-        label={tabs.TAB2.label}
-        value={tabs.TAB2.path}
-        data-testid="routes-tab"
-      />
-      <Tab
-        label={tabs.TAB3.label}
-        value={tabs.TAB3.path}
-        data-testid="plugins-tab"
-      ></Tab>
-    </Tabs>
+    <Fragment>
+      <Tabs
+        value={'tab1'}
+        onChange={(event, value) => {
+          navigate(value);
+        }}
+      >
+        <Tab
+          label={tabs.TAB1.label}
+          value={tabs.TAB1.path}
+          component={Link}
+          // component={() => <Link to="tab1" className={'tabLink'}></Link>}
+          // component={() => (
+          //   <NavLink
+          //     to="tab1"
+          //     style={({ isActive }) =>
+          //       isActive ? { color: 'green' } : { color: 'red' }
+          //     }
+          //   >
+          //     Messages
+          //   </NavLink>
+          // )}
+        />
+        <Tab label={tabs.TAB2.label} value={tabs.TAB2.path} />
+        <Tab label={tabs.TAB3.label} value={tabs.TAB3.path}></Tab>
+      </Tabs>
+      <Layout>
+        <Outlet />
+      </Layout>
+    </Fragment>
   );
 };
+
+export default TabbedLayout;
