@@ -5,6 +5,7 @@ import {
   Link,
   NavLink,
   Outlet,
+  useMatch,
   useNavigate,
   useParams,
 } from 'react-router-dom';
@@ -33,36 +34,42 @@ const Layout = ({ children }: { children: JSX.Element }) => {
   );
 };
 
+const useSelectedTab = () => {
+  const isTab1 = useMatch('/tab1');
+  const isTab2 = useMatch('/tab2');
+  const isTab3 = useMatch('/tab3');
+
+  if (isTab1) return 'tab1';
+  else if (isTab2) return 'tab2';
+  else if (isTab3) return 'tab3';
+
+  return 'tab1';
+};
+
 const TabbedLayout = () => {
-  const { selectedTab } = useParams();
-  const navigate = useNavigate();
+  const selectedTab = useSelectedTab();
 
   return (
     <Fragment>
-      <Tabs
-        value={'tab1'}
-        onChange={(event, value) => {
-          navigate(value);
-        }}
-      >
+      <Tabs value={selectedTab}>
         <Tab
           label={tabs.TAB1.label}
           value={tabs.TAB1.path}
+          to="tab1"
           component={Link}
-          // component={() => <Link to="tab1" className={'tabLink'}></Link>}
-          // component={() => (
-          //   <NavLink
-          //     to="tab1"
-          //     style={({ isActive }) =>
-          //       isActive ? { color: 'green' } : { color: 'red' }
-          //     }
-          //   >
-          //     Messages
-          //   </NavLink>
-          // )}
         />
-        <Tab label={tabs.TAB2.label} value={tabs.TAB2.path} />
-        <Tab label={tabs.TAB3.label} value={tabs.TAB3.path}></Tab>
+        <Tab
+          label={tabs.TAB2.label}
+          value={tabs.TAB2.path}
+          to="tab2"
+          component={Link}
+        />
+        <Tab
+          label={tabs.TAB3.label}
+          value={tabs.TAB3.path}
+          to="tab3"
+          component={Link}
+        />
       </Tabs>
       <Layout>
         <Outlet />

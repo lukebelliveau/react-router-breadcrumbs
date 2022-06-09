@@ -2,98 +2,19 @@ import * as React from 'react';
 import './style.css';
 import TabbedLayout from './TabbedLayout';
 
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import {
-  MemoryRouter,
-  BrowserRouter,
-  Route,
-  Routes,
-  Link,
-  matchPath,
-  useLocation,
-} from 'react-router-dom';
-import { StaticRouter } from 'react-router-dom/server';
-
-function Router(props) {
-  const { children } = props;
-  if (typeof window === 'undefined') {
-    return <StaticRouter location="/drafts">{children}</StaticRouter>;
-  }
-
-  return (
-    <MemoryRouter initialEntries={['/drafts']} initialIndex={0}>
-      {children}
-    </MemoryRouter>
-  );
-}
-
-function useRouteMatch(patterns) {
-  const { pathname } = useLocation();
-
-  for (let i = 0; i < patterns.length; i += 1) {
-    const pattern = patterns[i];
-    const possibleMatch = matchPath(pattern, pathname);
-    if (possibleMatch !== null) {
-      return possibleMatch;
-    }
-  }
-
-  return null;
-}
-
-function MyTabs() {
-  // You need to provide the routes in descendant order.
-  // This means that if you have nested routes like:
-  // users, users/new, users/edit.
-  // Then the order should be ['users/add', 'users/edit', 'users'].
-  const routeMatch = useRouteMatch(['/inbox/:id', '/drafts', '/trash']);
-  const currentTab = routeMatch?.pattern?.path;
-
-  return (
-    <Tabs value={currentTab}>
-      <Tab label="Inbox" value="/inbox/:id" to="/inbox/1" component={Link} />
-      <Tab label="Drafts" value="/drafts" to="/drafts" component={Link} />
-      <Tab label="Trash" value="/trash" to="/trash" component={Link} />
-    </Tabs>
-  );
-}
-
-function CurrentRoute() {
-  const location = useLocation();
-
-  return (
-    <Typography variant="body2" sx={{ pb: 2 }} color="text.secondary">
-      Current route: {location.pathname}
-    </Typography>
-  );
-}
-
-function TabsRouter() {
-  return (
-    <Router>
-      <Box sx={{ width: '100%' }}>
-        <Routes>
-          <Route path="*" element={<CurrentRoute />} />
-        </Routes>
-        <MyTabs />
-      </Box>
-    </Router>
-  );
-}
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 export default function App() {
   return (
-    <MemoryRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="/*" element={<TabbedLayout />}>
+          <Route index element={<Navigate to={'tab1'} replace />} />
           <Route path="tab1" element={<div>Tab 1 Content</div>} />
           <Route path="tab2" element={<div>Tab 2 Content</div>} />
           <Route path="tab3" element={<div>Tab 3 Content</div>} />
         </Route>
       </Routes>
-    </MemoryRouter>
+    </BrowserRouter>
   );
 }
