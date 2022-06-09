@@ -1,16 +1,7 @@
-import { Tab, Tabs } from '@mui/material';
+import * as React from 'react';
 import { Fragment } from 'react';
-import React = require('react');
-import {
-  Link,
-  matchPath,
-  NavLink,
-  Outlet,
-  useLocation,
-  useMatch,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Tab, Tabs } from '@mui/material';
+import { Link, matchPath, Outlet, useLocation } from 'react-router-dom';
 
 const Tab1Content = () => <div>Tab 1 Content</div>;
 const Tab2Content = () => <div>Tab 2 Content</div>;
@@ -54,21 +45,9 @@ function useRouteMatch(patterns: readonly string[]) {
   return null;
 }
 
-const useSelectedTab = () => {
-  const isTab1 = useMatch('/tab1');
-  const isTab2 = useMatch('/tab2');
-  const isTab3 = useMatch('/tab3');
-
-  if (isTab1) return 'tab1';
-  else if (isTab2) return 'tab2';
-  else if (isTab3) return 'tab3';
-
-  return 'tab1';
-};
-
 const TabbedLayout = () => {
-  const selectedTab = useRouteMatch(['tab1', 'tab2', 'tab3']);
-  console.log(selectedTab.pattern.path);
+  const tabPaths = Object.values(tabs).map((tab) => tab.path);
+  const selectedTab = useRouteMatch(tabPaths);
 
   return (
     <Fragment>
